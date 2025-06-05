@@ -125,7 +125,7 @@ function App() {
                   setPokeSent(true);
                   setPokeHandle("");
                   setPokeMsg("");
-                  setTimeout(() => setPokeSent(false), 2000);
+                  setTimeout(() => setPokeSent(false), 5000);
                 } else {
                   setPokeError(true);
                   // Try to get Retry-After header from response
