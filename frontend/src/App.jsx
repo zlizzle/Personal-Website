@@ -112,7 +112,7 @@ function App() {
 
               // Send poke data to backend
               try {
-                const response = await fetch("https://your-backend.onrender.com/poke", {
+                const response = await fetch("https://personal-website-ul2i.onrender.com/poke", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
