@@ -27,7 +27,7 @@ function App() {
 
         {/* Name and intro */}
         <h1>Ernesto Diaz, SWE</h1>
-        <p>This is a minimal React app. More cool stuff coming soon!</p>
+        <p>Backend-focused software engineer, API design, and technical problem-solving.</p>
 
         {/* Projects button/list */}
         <button onClick={() => setShowProjects(!showProjects)}>
