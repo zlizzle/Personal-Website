@@ -1,42 +1,488 @@
-#root {
-  max-width: 1280px;
+/* === FONTS & COLORS === */
+html, body {
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  background: #f8f6f0;
+  color: #232323;
+  font-family: 'Fira Mono', 'Menlo', 'Monaco', monospace;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100vw;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-bottom: 0;
+  box-sizing: border-box;
+}
+
+/* === HEADINGS === */
+h1 {
+  color: #232323;
+  margin: 1.6em 0 0.6em 0;
   text-align: center;
+  font-size: 2.1em;
+  letter-spacing: 0.01em;
+  font-family: 'Fira Mono', monospace;
+  font-weight: bold;
+  text-shadow: 1px 2px 0 #ffd583;
+}
+h2, h3 {
+  color: #131313;
+  text-align: center;
+  margin: 0.6em 0 0.6em 0;
+  font-weight: bold;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* === PARAGRAPH === */
+p {
+  color: #575757;
+  text-align: center;
+  font-size: 1.06em;
+  margin-bottom: 1.2em;
+  letter-spacing: 0.01em;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* === BANNER === */
+.virus-banner {
+  background: #fff8e1;
+  color: #8b6800;
+  padding: 0.7em 0.6em 0.5em 0.6em;
+  border: 2px solid #ffd583;
+  margin: 0.8em auto 1em auto;
+  border-radius: 10px;
+  font-family: inherit;
+  max-width: 410px;
+  width: 95vw;
+  box-sizing: border-box;
+  font-size: 0.97em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 8px 0 #ffd58333;
+  font-weight: 500;
+}
+.virus-banner button {
+  margin: 0.7em 0 0 0;
+  background: #232323;
+  color: #fff8e1;
+  border: none;
+  border-radius: 6px;
+  padding: 0.33em 1.2em;
+  font-size: 0.98em;
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  width: fit-content;
+  align-self: center;
+  box-sizing: border-box;
+  box-shadow: 0 1px 4px 0 #bbb3;
+  letter-spacing: 0.02em;
+}
+.virus-banner button:hover {
+  background: #ffd583;
+  color: #232323;
+  border: 1px solid #ffd583;
+}
+
+/* === PROJECTS LIST === */
+.projects-list {
+  background: #fffdfa;
+  color: #212121;
+  border-left: 4px solid #ffd583;
+  padding: 1em 1.2em;
+  margin: 1.1em auto 1.2em auto;
+  border-radius: 7px;
+  font-family: inherit;
+  max-width: 460px;
+  width: 93vw;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px #f8e7bb40;
+}
+.projects-list h2 {
+  color: #8b6800;
+  margin-top: 0;
+  font-size: 1.05em;
+  letter-spacing: 0.01em;
+}
+.projects-list strong {
+  color: #131313;
+  background: #ffd58342;
+  padding: 0.05em 0.33em;
+  border-radius: 3px;
+}
+
+/* === SOCIALS ROW === */
+.socials-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.18em;
+  margin: 1em 0 0.5em 0;
+}
+.socials-row a svg {
+  display: inline;
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  background: #f8f6f0;
+  border-radius: 5px;
+  border: 1.5px solid #ffd583;
+  box-shadow: 0 1px 3px #ffd58333;
+  transition: transform 0.13s, filter 0.13s, background 0.13s;
+  filter: grayscale(70%) brightness(1.12);
+}
+.socials-row a:hover svg,
+.socials-row a:focus svg {
+  transform: scale(1.13);
+  filter: grayscale(0%) brightness(1.17) drop-shadow(0 0 5px #ffd583);
+  background: #ffd583;
+}
+
+/* === BUTTONS (Show Projects etc) === */
+button:not(.ai-chat-toggle):not([type="submit"]) {
+  display: block;
+  width: 93vw;
+  max-width: 260px;
+  margin: 1.2em auto 1.1em auto;
+  padding: 0.78em 1.1em;
+  border-radius: 8px;
+  background: #232323;
+  color: #fff8e1;
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 1.07em;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  box-shadow: 0 2px 10px #ffd58324;
+  transition: background 0.14s, color 0.14s;
+  letter-spacing: 0.02em;
+}
+button:not(.ai-chat-toggle):not([type="submit"]):hover {
+  background: #ffd583;
+  color: #232323;
+}
+
+/* === GITHUB SOURCE LINK === */
+.view-source-link {
+  text-align: center;
+  font-size: 0.96em;
+  color: #8b6800;
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+}
+.view-source-link a {
+  color: #232323;
+  text-decoration: underline;
+  border-bottom: 2px dotted #ffd583;
+  transition: border 0.15s;
+}
+.view-source-link a:hover {
+  border-bottom: 2.5px solid #232323;
+}
+
+/* === POKE SECTION (STICKY FOOTER) === */
+.poke-section {
+  position: relative;
+  width: 410px;
+  max-width: 98vw;
+  margin: 2.4em auto 1.4em auto;
+  border-radius: 14px;
+  background: #232323;
+  color: #fff8e1;
+  box-shadow: 0 4px 24px #ffd58330;
+  font-family: inherit;
+  padding: 1.2em 2em 1.3em 2em;
+  border-top: 2.5px solid #ffd583;
+  border-bottom: 2.5px solid #ffd583;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.poke-section h2 {
+  margin-top: 0;
+  color: #ffd583;
+  text-align: center;
+  font-size: 1.04em;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+}
+.poke-section label {
+  display: block;
+  color: #fffbe5;
+  margin: 0.7em 0 0.15em 0;
+  font-size: 1em;
+  width: 100%;
+  text-align: left;
+}
+.poke-section input {
+  margin-top: 0.17em;
+  margin-bottom: 0.37em;
+  padding: 0.43em 0.68em;
+  border-radius: 4px;
+  border: 1.2px solid #ffd583;
+  background: #fffdfa;
+  color: #232323;
+  font-family: inherit;
+  font-size: 1em;
+  width: 98%;
+  box-sizing: border-box;
+}
+.poke-section button[type="submit"] {
+  margin-top: 0.6em;
+  width: 100%;
+  background: #ffd583;
+  color: #232323;
+  border: none;
+  border-radius: 5px;
+  padding: 0.65em 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 1.03em;
+  transition: background 0.13s;
+  letter-spacing: 0.02em;
+}
+.poke-section button[type="submit"]:hover {
+  background: #fffbe5;
+  color: #232323;
+}
+.poke-thankyou,
+.poke-backend-error,
+.poke-easter-egg {
+  text-align: center;
+  font-size: 1.06em;
+  margin-top: 1em;
+  border-radius: 4px;
+  padding: 0.68em 0.8em;
+  color: #232323;
+}
+.poke-backend-error {
+  background: #ffe0e0;
+  color: #ae1a1a;
+  border: 1.5px solid #ae1a1a;
+}
+.poke-easter-egg {
+  background: #fffbe5;
+  color: #d0891e;
+  border: 1.5px dashed #ffd583;
+}
+.poke-thankyou {
+  background: #fffbe5;
+  color: #232323;
+  border: 1.5px solid #ffd583;
+}
+
+/* === AI CHAT WIDGET & TOGGLE === */
+.ai-chat-toggle {
+  position: fixed !important;
+  right: 4vw !important;
+  bottom: 120px !important;
+  z-index: 150;
+  border-radius: 14px !important;
+  background: #ffd583 !important;
+  color: #232323 !important;
+  border: 2px solid #232323 !important;
+  padding: 0.51em 1.08em !important;
+  font-family: inherit !important;
+  font-weight: bold !important;
+  font-size: 1.06em !important;
+  box-shadow: 0 2px 7px rgba(200,200,200,0.12) !important;
+  transition: background 0.12s, color 0.12s;
+  letter-spacing: 0.01em;
+}
+.ai-chat-toggle:hover {
+  background: #232323 !important;
+  color: #ffd583 !important;
+  border: 2px solid #ffd583 !important;
+}
+.ai-chat-widget {
+  position: fixed;
+  right: 4vw;
+  bottom: 163px;
+  width: 295px;
+  background: #fffdfa;
+  border: 2.2px solid #ffd583;
+  border-radius: 13px;
+  box-shadow: 0 4px 18px #ffd58333;
+  z-index: 200;
+  font-family: inherit;
+  color: #232323;
+  max-width: 96vw;
+}
+.ai-chat-header {
+  background: #ffd583;
+  color: #232323;
+  padding: 0.58em;
+  border-top-left-radius: 11px;
+  border-top-right-radius: 11px;
+  font-weight: bold;
+  font-size: 1.05em;
+  border-bottom: 1.1px solid #fffdfa;
+}
+.ai-chat-body {
+  padding: 0.95em 0.7em 0.7em 0.7em;
+}
+.ai-chat-msg {
+  margin-bottom: 0.57em;
+  padding: 0.38em 0.68em;
+  border-radius: 6px;
+  font-size: 1em;
+}
+.ai-chat-msg.user {
+  background: #ffd583;
+  color: #232323;
+  align-self: flex-end;
+}
+.ai-chat-msg.ai {
+  background: #fffdfa;
+  color: #d0891e;
+  border: 1.1px solid #ffd583;
+  align-self: flex-start;
+}
+.chat-label {
+  font-weight: bold;
+  margin-right: 0.5em;
+  color: #8b6800;
+}
+.ai-chat-footer {
+  padding: 0.38em 1em 0.72em 1em;
+  background: #fffbe5;
+  color: #232323;
+  border-bottom-left-radius: 11px;
+  border-bottom-right-radius: 11px;
+  font-size: 0.94em;
+  text-align: right;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  body {
+    padding-bottom: 0;
+    font-size: 0.97em;
   }
-  to {
-    transform: rotate(360deg);
+  .container {
+    padding: 0 1em;
+    padding-bottom: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .virus-banner {
+    margin-top: 0.7em;
+    margin-bottom: 0.7em;
+    padding-top: 0.7em;
+    padding-bottom: 0.7em;
+  }
+  h1 {
+    font-size: 1.18em;
+    margin-top: 0.7em;
+    margin-bottom: 0.3em;
+    text-shadow: 1px 2px 0 #ffd583;
+  }
+  h2, h3 {
+    margin: 0.3em 0 0.3em 0;
+  }
+  p {
+    font-size: 1em;
+    margin-bottom: 0.3em;
+    margin-top: 0.3em;
+  }
+  .projects-list,
+  .poke-section,
+  .ai-chat-widget {
+    font-size: 0.95em;
+    padding-left: 2vw !important;
+    padding-right: 2vw !important;
+    max-width: 99vw !important;
+    width: 98vw !important;
+    box-sizing: border-box;
+  }
+  .poke-section {
+    position: sticky;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    border-radius: 0 0 12px 12px;
+    z-index: 100;
+    padding: 1em 5vw;
+    box-shadow: 0 -2px 12px rgba(170,148,84,0.08);
+    border-bottom: none;
+    border-top: 2.5px solid #ffd583;
+    background: #232323;
+    margin-top: auto;
+  }
+  .ai-chat-toggle {
+    right: 3vw !important;
+    bottom: 132px !important;
+    font-size: 0.98em !important;
+    padding: 0.33em 0.9em !important;
+  }
+  .socials-row {
+    gap: 0.72em;
+    margin-top: 0.5em;
+    margin-bottom: 0.3em;
   }
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 420px) {
+  .virus-banner, .projects-list, .poke-section, .ai-chat-widget {
+    font-size: 0.89em !important;
+    padding-left: 1vw !important;
+    padding-right: 1vw !important;
   }
+  h1 { font-size: 1em !important; }
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+@media (min-width: 601px) {
+  .container {
+    width: 100vw;
+    max-width: 900px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 0;
+    box-sizing: border-box;
+  }
+  h1 {
+    margin-top: 2.2em;
+    margin-bottom: 0.3em;
+  }
+  h2, h3 {
+    margin: 0.3em 0 0.3em 0;
+  }
+  p {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+  }
+  .projects-list {
+    margin-top: 0.7em;
+    margin-bottom: 0.7em;
+  }
+  .socials-row {
+    margin-top: 0.5em;
+    margin-bottom: 0.3em;
+  }
+  .poke-section {
+    max-width: 900px;
+    width: 100%;
+  }
 }
