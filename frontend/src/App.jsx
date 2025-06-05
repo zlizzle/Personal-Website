@@ -112,8 +112,7 @@ function App() {
 
               // Send poke data to backend
               try {
-                // TODO: Update the URL below to your deployed backend API for production
-                const response = await fetch("http://localhost:8000/poke", {
+                const response = await fetch("https://your-backend.onrender.com/poke", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
