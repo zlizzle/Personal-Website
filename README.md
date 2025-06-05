@@ -1,4 +1,4 @@
-# Ernesto Diaz Personal Website
+# Personal Website
 
 A minimal React + FastAPI app. Poke me!
 
@@ -25,13 +25,11 @@ npm run dev
 ```
 
 ## Deployment
-
-- **Frontend:** Deploy the `frontend` folder to Vercel or Netlify. Build command: `npm run build`. Output: `dist`.
-- **Backend:** Deploy the `backend` folder to Fly.io, Render, or your VPS. Entrypoint: `uvicorn app.main:app`. Make sure to set the correct CORS origins in `main.py`.
-- **Custom Domain:** Set up via your hosting provider's dashboard.
+- Frontend: Deploy the `frontend` folder to Vercel or Netlify. Build command: `npm run build`. Output: `dist`.
+- Backend: Deploy the `backend` folder to Fly.io, Render, or your VPS. Entrypoint: `uvicorn app.main:app`. Make sure to set the correct CORS origins in `main.py`.
+- Custom Domain: Set up via your hosting provider's dashboard.
 
 ## Analytics (Optional)
-
 - Add privacy-friendly analytics like [Plausible](https://plausible.io/) or [Umami](https://umami.is/).
 - Example (Plausible):
   ```html
