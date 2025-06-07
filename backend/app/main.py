@@ -6,11 +6,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, constr
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
-from fastapi import FastAPI, Request
 from slowapi.errors import RateLimitExceeded
+from .routes.blog import router as blog_router
+from .database import engine
+from .models import Base
 import os
 import logging
 import html
+
+# Create database tables
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -38,18 +43,12 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
 
+# Include blog routes
+app.include_router(blog_router)
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
-
-@app.post("/poke")
-async def receive_poke(data: PokeData, request: Request):
-    # Here you could log/store pokes, add spam detection, etc.
-    # For now, just print it and send a playful response.
-    print(f"POKE from {data.handle}: {data.message}")
-    # Optional: Rate limiting/spam-check could go here
-
-    return {"success": True, "msg": "Poke received!", "your_ip": request.client.host}
 
 @app.post("/poke")
 @limiter.limit("3/minute")  # Allow 3 pokes per minute per IP

@@ -3,4 +3,5 @@ uvicorn
 jinja2
 python-multipart
 slowapi
-html5lib  # For advanced HTML sanitization 
+html5lib  # For advanced HTML sanitization
+sqlalchemy
