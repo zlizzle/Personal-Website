@@ -39,7 +39,10 @@ const HeroSection = styled.div`
   position: relative;
   width: 100%;
   min-height: 220px;
-  background: url(${props => props.img}) center/cover no-repeat;
+  background: 
+    linear-gradient(rgba(36,36,36,0.45), rgba(36,36,36,0.45)),
+    url(${props => props.img}) center/cover no-repeat,
+    #232946; /* fallback color */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -62,13 +65,15 @@ const HeroTitle = styled.h1`
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 0.7rem;
+  text-shadow: 0 2px 12px #232946cc, 0 1px 0 #0008;
 `;
 
 const HeroSubtitle = styled.div`
-  color: #eebbc3;
+  color: #ffd583;
   font-family: 'Merriweather', Georgia, serif;
   font-size: 1.2rem;
   font-style: italic;
+  text-shadow: 0 1px 6px #23294699;
 `;
 
 const PostContent = styled.article`
@@ -103,18 +108,6 @@ const PostContent = styled.article`
     text-align: left !important;
     width: 100%;
   }
-`;
-
-const FinalBlock = styled.div`
-  text-align: center;
-  font-size: 1.25rem;
-  margin: 2.5rem 0 0 0;
-  background: #fffbe5;
-  border-radius: 8px;
-  padding: 1.5rem 1rem;
-  color: #232323;
-  font-weight: 600;
-  box-shadow: 0 2px 8px #ffd58333;
 `;
 
 const BackButton = styled.button`
@@ -177,12 +170,7 @@ const BlogPost = () => {
   const isHeavy = slug === heavySlug; // or post.weight === 'heavy'
 
   // Optionally, treat the last 4 blocks as the final block for heavy posts
-  let finalBlock = null;
   let mainBlocks = rest;
-  if (isHeavy && rest.length > 4) {
-    finalBlock = rest.slice(-4).join('\n\n');
-    mainBlocks = rest.slice(0, -4);
-  }
 
   return (
     <PostContainer>
@@ -217,13 +205,6 @@ const BlogPost = () => {
             ))}
           </p>
         ))}
-        {isHeavy && finalBlock && (
-          <FinalBlock>
-            {finalBlock.split('\n').map((line, idx) => (
-              <div key={idx}>{line}</div>
-            ))}
-          </FinalBlock>
-        )}
       </PostContent>
     </PostContainer>
   );
