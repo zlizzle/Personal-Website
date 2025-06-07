@@ -35,23 +35,58 @@ const PostMeta = styled.div`
   margin-bottom: 2rem;
 `;
 
+const HeroSection = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  background: url(${props => props.img}) center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  filter: grayscale(0.2) brightness(0.8);
+  margin-bottom: 2.5rem;
+  border-radius: 10px 10px 0 0;
+`;
+
+const HeroOverlay = styled.div`
+  background: rgba(36, 36, 36, 0.45);
+  padding: 2.5rem 2rem;
+  border-radius: 10px;
+  text-align: center;
+`;
+
+const HeroTitle = styled.h1`
+  color: #fff;
+  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.7rem;
+`;
+
+const HeroSubtitle = styled.div`
+  color: #eebbc3;
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 1.2rem;
+  font-style: italic;
+`;
+
 const PostContent = styled.article`
+  font-family: 'Merriweather', Georgia, serif;
   color: #232323;
   background: #fcfbf7;
   border: 1.5px solid #ece7df;
-  border-radius: 8px;
-  padding: 2rem 1.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 2rem;
-  line-height: 1.7;
-  font-size: 1.13rem;
+  border-radius: 0 0 8px 8px;
+  padding: 2.5rem 2rem;
+  margin: 0 auto 2rem auto;
+  line-height: 1.85;
+  font-size: 1.15rem;
+  max-width: 600px;
   text-align: left !important;
-  width: 100%;
   box-shadow: 0 2px 8px #f8e7bb18;
-  font-family: system-ui, Arial, Helvetica, sans-serif;
 
   p {
-    margin-bottom: 1.6rem;
+    margin-bottom: 1.7rem;
     margin-top: 0;
     text-indent: 0;
     padding-left: 0;
@@ -68,6 +103,18 @@ const PostContent = styled.article`
     text-align: left !important;
     width: 100%;
   }
+`;
+
+const FinalBlock = styled.div`
+  text-align: center;
+  font-size: 1.25rem;
+  margin: 2.5rem 0 0 0;
+  background: #fffbe5;
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  color: #232323;
+  font-weight: 600;
+  box-shadow: 0 2px 8px #ffd58333;
 `;
 
 const BackButton = styled.button`
@@ -88,6 +135,8 @@ const BackButton = styled.button`
     color: #232946;
   }
 `;
+
+const heavySlug = 'a-stillness-that-builds'; // or use post.weight === 'heavy' if available
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -119,25 +168,62 @@ const BlogPost = () => {
   if (error) return <PostContainer>Error: {error}</PostContainer>;
   if (!post) return <PostContainer>Post not found</PostContainer>;
 
-  // Split content into paragraphs, treat the first as subtitle
-  const paragraphs = post.content.split('\n').filter(p => p.trim());
-  const subtitle = paragraphs[0];
-  const rest = paragraphs.slice(1);
+  // Split content into blocks by double newlines for paragraphs
+  const blocks = post.content.split(/\n\n+/).filter(b => b.trim());
+  const subtitle = blocks[0];
+  const rest = blocks.slice(1);
+
+  // Detect if this is a heavy post
+  const isHeavy = slug === heavySlug; // or post.weight === 'heavy'
+
+  // Optionally, treat the last 4 blocks as the final block for heavy posts
+  let finalBlock = null;
+  let mainBlocks = rest;
+  if (isHeavy && rest.length > 4) {
+    finalBlock = rest.slice(-4).join('\n\n');
+    mainBlocks = rest.slice(0, -4);
+  }
 
   return (
     <PostContainer>
-      <BackButtonRow>
-        <BackButton onClick={() => navigate('/blog')}>
-          ← Back to Blog
-        </BackButton>
-      </BackButtonRow>
-      <PostTitle>{post.title}</PostTitle>
-      <PostMeta>Posted on {new Date(post.created_at).toLocaleDateString()}</PostMeta>
+      {isHeavy && (
+        <HeroSection img={'/hero-stillness.jpg'}>
+          <HeroOverlay>
+            <HeroTitle>{post.title}</HeroTitle>
+            <HeroSubtitle>{subtitle}</HeroSubtitle>
+          </HeroOverlay>
+        </HeroSection>
+      )}
+      {!isHeavy && (
+        <>
+          <BackButtonRow>
+            <BackButton onClick={() => navigate('/blog')}>
+              ← Back to Blog
+            </BackButton>
+          </BackButtonRow>
+          <PostTitle>{post.title}</PostTitle>
+          <PostMeta>Posted on {new Date(post.created_at).toLocaleDateString()}</PostMeta>
+        </>
+      )}
       <PostContent>
-        <span className="subtitle">{subtitle}</span>
-        {rest.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
+        {!isHeavy && <span className="subtitle">{subtitle}</span>}
+        {mainBlocks.map((block, index) => (
+          <p key={index}>
+            {block.split('\n').map((line, i) => (
+              <React.Fragment key={i}>
+                {line}
+                {i < block.split('\n').length - 1 && <br />}
+              </React.Fragment>
+            ))}
+          </p>
         ))}
+        {isHeavy && finalBlock && (
+          <FinalBlock>
+            {finalBlock.split('\n').map((line, idx) => (
+              <div key={idx}>{line}</div>
+            ))}
+          </FinalBlock>
+        )}
       </PostContent>
     </PostContainer>
   );
