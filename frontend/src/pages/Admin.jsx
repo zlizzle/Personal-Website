@@ -62,8 +62,19 @@ const Message = styled.div`
 
 const PostsList = styled.div`
   margin-top: 2rem;
-  border-top: 1px solid rgba(238, 187, 195, 0.2);
-  padding-top: 1rem;
+  border-top: 2px solid rgba(238, 187, 195, 0.2);
+  padding-top: 1.5rem;
+
+  h2 {
+    color: #eebbc3;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+  }
+
+  p {
+    color: #b8c1ec;
+    font-style: italic;
+  }
 `;
 
 const PostItem = styled.div`
@@ -72,8 +83,9 @@ const PostItem = styled.div`
   align-items: center;
   padding: 1rem;
   margin-bottom: 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(35, 41, 70, 0.5);
   border-radius: 4px;
+  border: 1px solid rgba(238, 187, 195, 0.1);
 `;
 
 const PostInfo = styled.div`
@@ -82,33 +94,39 @@ const PostInfo = styled.div`
 
 const PostTitle = styled.h3`
   margin: 0;
-  color: #fff;
+  color: #eebbc3;
   font-size: 1.1rem;
+  font-weight: 600;
 `;
 
 const PostSlug = styled.div`
-  color: #888;
+  color: #b8c1ec;
   font-size: 0.9rem;
   margin-top: 0.25rem;
 `;
 
 const DeleteButton = styled.button`
-  background: #ff4444;
-  color: white;
+  background: #ff6b6b;
+  color: #232946;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
   margin-left: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: #ff6666;
+    background: #ff8787;
+    transform: translateY(-1px);
   }
 
   &:disabled {
-    background: #666;
+    background: #4a4e69;
+    color: #b8c1ec;
     cursor: not-allowed;
+    transform: none;
   }
 `;
 
