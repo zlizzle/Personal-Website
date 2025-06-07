@@ -9,6 +9,7 @@ const PostContainer = styled.div`
   background: #f8f6f0;
   border-radius: 10px;
   box-shadow: 0 1px 8px #f8e7bb40;
+  font-family: system-ui, Arial, Helvetica, sans-serif;
 `;
 
 const PostHeader = styled.header`
@@ -94,13 +95,11 @@ const BlogPost = () => {
 
   return (
     <PostContainer>
-      <BackButton onClick={() => navigate('/blog')}>← Back to Blog</BackButton>
-      <PostHeader>
-        <PostTitle>{post.title}</PostTitle>
-        <PostMeta>
-          Posted on {new Date(post.created_at).toLocaleDateString()}
-        </PostMeta>
-      </PostHeader>
+      <BackButton onClick={() => navigate('/blog')}>
+        ← Back to Blog
+      </BackButton>
+      <PostTitle>{post.title}</PostTitle>
+      <PostMeta>Posted on {new Date(post.created_at).toLocaleDateString()}</PostMeta>
       <PostContent>
         {post.content.split('\n').map((paragraph, index) => (
           <p key={index}>{paragraph}</p>
