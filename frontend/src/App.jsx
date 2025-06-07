@@ -30,7 +30,7 @@ function App() {
         <nav className="main-nav">
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/blog" className="nav-link">Blog</Link>
-          <Link to="/admin" className="nav-link">Admin</Link>
+          {/* <li><Link to="/admin">Admin</Link></li> */}
         </nav>
 
         {/* Render child routes */}
