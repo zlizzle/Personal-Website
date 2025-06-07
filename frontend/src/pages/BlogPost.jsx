@@ -45,14 +45,18 @@ const PostContent = styled.article`
   margin-bottom: 2rem;
   line-height: 1.7;
   font-size: 1.13rem;
-  text-align: left;
+  text-align: left !important;
+  width: 100%;
   box-shadow: 0 2px 8px #f8e7bb18;
+  font-family: system-ui, Arial, Helvetica, sans-serif;
 
   p {
     margin-bottom: 1.6rem;
     margin-top: 0;
     text-indent: 0;
     padding-left: 0;
+    text-align: left !important;
+    width: 100%;
   }
 
   .subtitle {
@@ -61,27 +65,13 @@ const PostContent = styled.article`
     margin-bottom: 2.2rem;
     font-size: 1.13rem;
     display: block;
+    text-align: left !important;
+    width: 100%;
   }
 `;
 
 const BackButton = styled.button`
-  background: #232946;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.7em 1.5em;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0;
-  display: inline-block;
-  cursor: pointer;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #eebbc3;
-    color: #232946;
-  }
-`;
+```
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -137,4 +127,4 @@ const BlogPost = () => {
   );
 };
 
-export default BlogPost; 
+export default BlogPost;
