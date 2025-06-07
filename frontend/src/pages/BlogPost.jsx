@@ -130,6 +130,7 @@ const BackButton = styled.button`
 `;
 
 const heavySlug = 'a-stillness-that-builds'; // or use post.weight === 'heavy' if available
+const HERO_IMAGE_URL = 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80';
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -175,7 +176,7 @@ const BlogPost = () => {
   return (
     <PostContainer>
       {isHeavy && (
-        <HeroSection img={'/hero-stillness.jpg'}>
+        <HeroSection img={HERO_IMAGE_URL}>
           <HeroOverlay>
             <HeroTitle>{post.title}</HeroTitle>
             <HeroSubtitle>{subtitle}</HeroSubtitle>
