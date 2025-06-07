@@ -7,7 +7,7 @@ from pydantic import BaseModel, constr
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-from .routes.blog import router as blog_router
+from .routes import blog, admin
 from .database import engine
 from .models import Base
 import os
@@ -21,7 +21,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://www.edsolutions.space"],  # Updated to deployed frontend domain
+    allow_origins=["*"],  # In production, replace with your frontend domain
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,8 +43,9 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
 
-# Include blog routes
-app.include_router(blog_router)
+# Include routers
+app.include_router(blog.router)
+app.include_router(admin.router)
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
@@ -63,3 +64,7 @@ async def receive_poke(data: PokeData, request: Request):
 
     # Return a generic message, no sensitive info
     return {"success": True, "msg": "Poke received!", "your_ip": user_ip}
+
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the API"}
