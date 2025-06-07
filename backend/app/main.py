@@ -64,7 +64,3 @@ async def receive_poke(data: PokeData, request: Request):
 
     # Return a generic message, no sensitive info
     return {"success": True, "msg": "Poke received!", "your_ip": user_ip}
-
-@app.get("/")
-async def root():
-    return {"message": "Welcome to the API"}

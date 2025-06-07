@@ -35,7 +35,7 @@ function App() {
 
         {/* Render child routes */}
         <Outlet />
-      </div>
+        </div>
 
       {/* Poke Section as Card or Sticky Footer */}
       <div className="poke-section">
@@ -102,26 +102,26 @@ function App() {
           >
             {/* Twitter handle input with ARIA label */}
             <label htmlFor="poke-handle">Your X (Twitter) handle:</label>
-            <input
+              <input
               id="poke-handle"
-              type="text"
-              value={pokeHandle}
-              onChange={e => setPokeHandle(e.target.value)}
-              placeholder="@yourhandle"
-              required
+                type="text"
+                value={pokeHandle}
+                onChange={e => setPokeHandle(e.target.value)}
+                placeholder="@yourhandle"
+                required
               aria-required="true"
               aria-label="Your X (Twitter) handle"
-            />
+              />
             {/* Optional message input with ARIA label */}
             <label htmlFor="poke-message">Optional message:</label>
-            <input
+              <input
               id="poke-message"
-              type="text"
-              value={pokeMsg}
-              onChange={e => setPokeMsg(e.target.value)}
-              placeholder="Say hi!"
+                type="text"
+                value={pokeMsg}
+                onChange={e => setPokeMsg(e.target.value)}
+                placeholder="Say hi!"
               aria-label="Optional message"
-            />
+              />
             {/* Submit button with ARIA label */}
             <button type="submit" aria-label="Send poke" disabled={isSubmitting}>Poke</button>
             {/* Subtle sending message */}

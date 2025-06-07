@@ -588,7 +588,7 @@ button:not(.ai-chat-toggle):not([type="submit"]):hover {
   font-size: 1rem;
   padding: 0;
   margin-bottom: 2rem;
-}
+  }
 
 .back-button:hover {
   text-decoration: underline;

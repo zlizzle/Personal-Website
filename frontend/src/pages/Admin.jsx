@@ -5,6 +5,9 @@ const AdminContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
+  background: #232946;  
+  color: #eebbc3;       
+  border-radius: 8px;    
 `;
 
 const Form = styled.form`
