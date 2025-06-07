@@ -44,7 +44,7 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
 
 # Include routers
-app.include_router(blog.router)
+app.include_router(blog.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
 
 @app.get("/", response_class=HTMLResponse)
