@@ -57,4 +57,20 @@ async def create_blog_post(
     db.add(db_post)
     db.commit()
     db.refresh(db_post)
-    return db_post 
+    return db_post
+
+@router.delete("/blog/{slug}")
+async def delete_blog_post(
+    slug: str,
+    db: Session = Depends(get_db),
+    token: dict = Depends(verify_token)
+):
+    # Find the post
+    post = db.query(BlogPost).filter(BlogPost.slug == slug).first()
+    if not post:
+        raise HTTPException(status_code=404, detail="Blog post not found")
+    
+    # Delete the post
+    db.delete(post)
+    db.commit()
+    return {"message": "Blog post deleted successfully"} 

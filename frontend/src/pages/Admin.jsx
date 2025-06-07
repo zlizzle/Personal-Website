@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const AdminContainer = styled.div`
@@ -60,6 +60,58 @@ const Message = styled.div`
   color: ${props => props.success ? '#00ff00' : '#ff0000'};
 `;
 
+const PostsList = styled.div`
+  margin-top: 2rem;
+  border-top: 1px solid rgba(238, 187, 195, 0.2);
+  padding-top: 1rem;
+`;
+
+const PostItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+`;
+
+const PostInfo = styled.div`
+  flex: 1;
+`;
+
+const PostTitle = styled.h3`
+  margin: 0;
+  color: #fff;
+  font-size: 1.1rem;
+`;
+
+const PostSlug = styled.div`
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+`;
+
+const DeleteButton = styled.button`
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 1rem;
+
+  &:hover {
+    background: #ff6666;
+  }
+
+  &:disabled {
+    background: #666;
+    cursor: not-allowed;
+  }
+`;
+
 const Admin = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -68,6 +120,60 @@ const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
+  const [posts, setPosts] = useState([]);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Fetch posts when authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchPosts();
+    }
+  }, [isAuthenticated]);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('/api/blog');
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+      const data = await response.json();
+      setPosts(data);
+    } catch (error) {
+      setMessage('Error fetching posts');
+      setIsSuccess(false);
+    }
+  };
+
+  const handleDelete = async (slug) => {
+    if (!window.confirm('Are you sure you want to delete this post?')) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/blog/${slug}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
+        },
+      });
+
+      if (response.ok) {
+        setMessage('Post deleted successfully');
+        setIsSuccess(true);
+        // Refresh the posts list
+        fetchPosts();
+      } else {
+        setMessage('Failed to delete post');
+        setIsSuccess(false);
+      }
+    } catch (error) {
+      setMessage('Error deleting post');
+      setIsSuccess(false);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -155,7 +261,10 @@ const Admin = () => {
 
   return (
     <AdminContainer>
-      <h1>Add New Blog Post</h1>
+      <h1>Blog Admin</h1>
+      
+      {/* New Post Form */}
+      <h2>Add New Post</h2>
       <Form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title">Title:</label>
@@ -179,6 +288,28 @@ const Admin = () => {
         <Button type="submit">Add Post</Button>
       </Form>
       {message && <Message success={isSuccess}>{message}</Message>}
+
+      {/* Existing Posts List */}
+      <PostsList>
+        <h2>Existing Posts</h2>
+        {posts.map((post) => (
+          <PostItem key={post.id}>
+            <PostInfo>
+              <PostTitle>{post.title}</PostTitle>
+              <PostSlug>/{post.slug}</PostSlug>
+            </PostInfo>
+            <DeleteButton 
+              onClick={() => handleDelete(post.slug)}
+              disabled={isDeleting}
+            >
+              Delete
+            </DeleteButton>
+          </PostItem>
+        ))}
+        {posts.length === 0 && (
+          <p>No posts yet. Add your first post above!</p>
+        )}
+      </PostsList>
     </AdminContainer>
   );
 };
