@@ -14,36 +14,50 @@ const PostHeader = styled.header`
 
 const PostTitle = styled.h1`
   margin: 0 0 1rem 0;
-  color: #fff;
+  color: #232323;
   font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-align: center;
 `;
 
 const PostMeta = styled.div`
-  color: #888;
-  font-size: 0.9rem;
+  color: #6c6c6c;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
 `;
 
 const PostContent = styled.article`
-  color: #fff;
-  line-height: 1.8;
-  font-size: 1.1rem;
+  color: #232323;
+  line-height: 1.5;
+  font-size: 1.13rem;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: left;
 
   p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.1rem;
+    margin-top: 0;
   }
 `;
 
 const BackButton = styled.button`
-  background: none;
+  background: #232946;
+  color: #fff;
   border: none;
-  color: #eebbc3;
+  border-radius: 6px;
+  padding: 0.7em 1.5em;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 2rem auto 2.5rem auto;
+  display: block;
   cursor: pointer;
-  font-size: 1rem;
-  padding: 0;
-  margin-bottom: 2rem;
-  
+  transition: background 0.2s;
+
   &:hover {
-    text-decoration: underline;
+    background: #eebbc3;
+    color: #232946;
   }
 `;
 
