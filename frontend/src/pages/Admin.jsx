@@ -78,6 +78,8 @@ const Admin = () => {
       });
 
       if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('adminToken', data.access_token);
         setIsAuthenticated(true);
         setAuthError('');
       } else {
