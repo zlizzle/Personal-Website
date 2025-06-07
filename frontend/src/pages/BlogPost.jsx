@@ -71,7 +71,23 @@ const PostContent = styled.article`
 `;
 
 const BackButton = styled.button`
-```
+  background: #232946;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 1.5em;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  display: inline-block;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #eebbc3;
+    color: #232946;
+  }
+`;
 
 const BlogPost = () => {
   const { slug } = useParams();
