@@ -12,8 +12,11 @@ const PostContainer = styled.div`
   font-family: system-ui, Arial, Helvetica, sans-serif;
 `;
 
-const PostHeader = styled.header`
-  margin-bottom: 2rem;
+const BackButtonRow = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
 `;
 
 const PostTitle = styled.h1`
@@ -34,13 +37,30 @@ const PostMeta = styled.div`
 
 const PostContent = styled.article`
   color: #232323;
-  line-height: 1.5;
+  background: #fcfbf7;
+  border: 1.5px solid #ece7df;
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  line-height: 1.7;
   font-size: 1.13rem;
   text-align: left;
+  box-shadow: 0 2px 8px #f8e7bb18;
 
   p {
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.6rem;
     margin-top: 0;
+    text-indent: 0;
+    padding-left: 0;
+  }
+
+  .subtitle {
+    font-style: italic;
+    color: #444;
+    margin-bottom: 2.2rem;
+    font-size: 1.13rem;
+    display: block;
   }
 `;
 
@@ -52,7 +72,7 @@ const BackButton = styled.button`
   padding: 0.7em 1.5em;
   font-size: 1.1rem;
   font-weight: 600;
-  margin: 2rem 0 2.5rem 0;
+  margin: 0;
   display: inline-block;
   cursor: pointer;
   transition: background 0.2s;
@@ -93,15 +113,23 @@ const BlogPost = () => {
   if (error) return <PostContainer>Error: {error}</PostContainer>;
   if (!post) return <PostContainer>Post not found</PostContainer>;
 
+  // Split content into paragraphs, treat the first as subtitle
+  const paragraphs = post.content.split('\n').filter(p => p.trim());
+  const subtitle = paragraphs[0];
+  const rest = paragraphs.slice(1);
+
   return (
     <PostContainer>
-      <BackButton onClick={() => navigate('/blog')}>
-        ← Back to Blog
-      </BackButton>
+      <BackButtonRow>
+        <BackButton onClick={() => navigate('/blog')}>
+          ← Back to Blog
+        </BackButton>
+      </BackButtonRow>
       <PostTitle>{post.title}</PostTitle>
       <PostMeta>Posted on {new Date(post.created_at).toLocaleDateString()}</PostMeta>
       <PostContent>
-        {post.content.split('\n').map((paragraph, index) => (
+        <span className="subtitle">{subtitle}</span>
+        {rest.map((paragraph, index) => (
           <p key={index}>{paragraph}</p>
         ))}
       </PostContent>
