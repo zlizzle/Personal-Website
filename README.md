@@ -14,6 +14,13 @@ cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+
+# Initialize the database and add a sample blog post
+cd app
+python init_db.py
+cd ..
+
+# Start the server
 uvicorn app.main:app --reload
 ```
 
