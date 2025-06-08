@@ -17,7 +17,8 @@ POSTGRES_DB = os.getenv("POSTGRES_DB", "blog")
 # Create PostgreSQL database URL
 DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 
-engine = create_engine(DATABASE_URL)
+# (For PostgreSQL, connect_args is not needed, but we add a dummy value to avoid SQLAlchemy error.)
+engine = create_engine(DATABASE_URL, connect_args={})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Dependency to get DB session
