@@ -35,7 +35,7 @@ function App() {
 
         {/* Render child routes */}
         <Outlet />
-        </div>
+      </div>
 
       {/* Poke Section as Card or Sticky Footer */}
       <div className="poke-section">
@@ -132,31 +132,16 @@ function App() {
         )}
       </div>
 
-      {/* AI Chat Widget Toggle and Widget */}
+      {/* AI Chat Toggle */}
       <button
         className="ai-chat-toggle"
         onClick={() => setShowAIChat(!showAIChat)}
-        style={{
-          position: "fixed",
-          right: "2vw",
-          bottom: "80px",
-          zIndex: 150,
-          borderRadius: "20px",
-          background: "#ffd583",
-          color: "#232323",
-          border: "1.5px solid #232323",
-          padding: "0.4em 1.2em",
-          cursor: "pointer",
-          fontFamily: "monospace",
-          fontWeight: "bold",
-          fontSize: "1em",
-          boxShadow: "0 2px 8px rgba(34,34,54,0.12)"
-        }}
         aria-label={showAIChat ? "Hide AI" : "Ask AI"}
       >
         {showAIChat ? "Hide AI" : "Ask AI"}
       </button>
 
+      {/* AI Chat Widget */}
       {showAIChat && (
         <div className="ai-chat-widget">
           <div className="ai-chat-header">🤖 AI Assistant</div>
@@ -184,8 +169,8 @@ function App() {
         </div>
       )}
 
-      {/* Copyright Footer */}
-      <footer style={{textAlign: 'center', fontSize: '0.93em', color: '#bbb', margin: '1.5em 0 0.5em 0'}}>
+      {/* Footer */}
+      <footer>
         © {new Date().getFullYear()} All rights reserved.
       </footer>
     </>
