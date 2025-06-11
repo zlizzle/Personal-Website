@@ -3,13 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const PostContainer = styled.div`
-  max-width: 700px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 2rem 1.5rem;
-  background: #f8f6f0;
-  border-radius: 10px;
-  box-shadow: 0 1px 8px #f8e7bb40;
-  font-family: system-ui, Arial, Helvetica, sans-serif;
+  padding: 2rem;
+  background: var(--surface);
+  border-radius: 4px;
 `;
 
 const BackButtonRow = styled.div`
@@ -20,112 +18,95 @@ const BackButtonRow = styled.div`
 `;
 
 const PostTitle = styled.h1`
-  margin: 0 0 0.7rem 0;
-  color: #232323;
-  font-size: 2.3rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
-  text-align: left;
+  margin: 0 0 1rem 0;
+  color: var(--text);
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 `;
 
 const PostMeta = styled.div`
-  color: #6c6c6c;
+  color: var(--text-muted);
   font-size: 1rem;
-  text-align: left;
   margin-bottom: 2rem;
+  font-family: 'DM Sans', sans-serif;
 `;
 
 const HeroSection = styled.div`
   position: relative;
   width: 100%;
-  min-height: 220px;
+  min-height: 280px;
   background: 
-    linear-gradient(rgba(36,36,36,0.45), rgba(36,36,36,0.45)),
-    url(${props => props.img}) center/cover no-repeat,
-    #232946; /* fallback color */
+    linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.8)),
+    url(${props => props.img}) center/cover no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  filter: grayscale(0.2) brightness(0.8);
-  margin-bottom: 2.5rem;
-  border-radius: 10px 10px 0 0;
+  margin-bottom: 2rem;
+  border-radius: 4px;
 `;
 
 const HeroOverlay = styled.div`
-  background: rgba(36, 36, 36, 0.45);
-  padding: 2.5rem 2rem;
-  border-radius: 10px;
+  background: var(--surface);
+  padding: 2rem;
+  border-radius: 4px;
   text-align: center;
 `;
 
 const HeroTitle = styled.h1`
-  color: #fff;
-  font-family: 'Lato', Arial, Helvetica, sans-serif;
+  color: var(--text);
   font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 0.7rem;
-  text-shadow: 0 2px 12px #232946cc, 0 1px 0 #0008;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
 `;
 
 const HeroSubtitle = styled.div`
-  color: #ffd583;
-  font-family: 'Merriweather', Georgia, serif;
+  color: var(--accent);
   font-size: 1.2rem;
-  font-style: italic;
-  text-shadow: 0 1px 6px #23294699;
+  font-family: 'DM Sans', sans-serif;
 `;
 
 const PostContent = styled.article`
-  font-family: 'Merriweather', Georgia, serif;
-  color: #232323;
-  background: #fcfbf7;
-  border: 1.5px solid #ece7df;
-  border-radius: 0 0 8px 8px;
-  padding: 2.5rem 2rem;
+  color: var(--text-muted);
+  background: var(--bg);
+  border-radius: 4px;
+  padding: 2rem;
   margin: 0 auto 2rem auto;
-  line-height: 1.85;
-  font-size: 1.15rem;
-  max-width: 600px;
-  text-align: left !important;
-  box-shadow: 0 2px 8px #f8e7bb18;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  max-width: 700px;
 
   p {
-    margin-bottom: 1.7rem;
+    margin-bottom: 1.5rem;
     margin-top: 0;
-    text-indent: 0;
-    padding-left: 0;
-    text-align: left !important;
-    width: 100%;
+    text-align: left;
   }
 
   .subtitle {
-    font-style: italic;
-    color: #444;
-    margin-bottom: 2.2rem;
-    font-size: 1.13rem;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    font-family: 'DM Sans', sans-serif;
     display: block;
-    text-align: left !important;
-    width: 100%;
+    text-align: left;
   }
 `;
 
 const BackButton = styled.button`
-  background: #232946;
-  color: #fff;
+  background: var(--accent);
+  color: var(--bg);
   border: none;
-  border-radius: 6px;
-  padding: 0.7em 1.5em;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0;
-  display: inline-block;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s ease;
 
   &:hover {
-    background: #eebbc3;
-    color: #232946;
+    background: var(--accent-hover);
   }
 `;
 

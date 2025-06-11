@@ -5,9 +5,9 @@ const AdminContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  background: #232946;  
-  color: #eebbc3;       
-  border-radius: 8px;    
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 4px;
 `;
 
 const Form = styled.form`
@@ -18,37 +18,57 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-  padding: 0.5rem;
-  border: 1px solid #eebbc3;
+  padding: 0.75rem;
+  border: 1px solid var(--text-muted);
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  background: var(--bg);
+  color: var(--text);
   font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
 `;
 
 const TextArea = styled.textarea`
-  padding: 0.5rem;
-  border: 1px solid #eebbc3;
+  padding: 0.75rem;
+  border: 1px solid var(--text-muted);
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  background: var(--bg);
+  color: var(--text);
   font-size: 1rem;
   min-height: 200px;
   resize: vertical;
+  width: 100%;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
 `;
 
 const Button = styled.button`
-  padding: 0.5rem 1rem;
-  background: #eebbc3;
-  color: #232946;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: var(--bg);
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 
   &:hover {
-    background: #ffd583;
+    background: var(--accent-hover);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 
@@ -56,23 +76,23 @@ const Message = styled.div`
   margin-top: 1rem;
   padding: 1rem;
   border-radius: 4px;
-  background: ${props => props.success ? 'rgba(0, 255, 0, 0.1)' : 'rgba(255, 0, 0, 0.1)'};
-  color: ${props => props.success ? '#00ff00' : '#ff0000'};
+  background: ${props => props.success ? 'rgba(0, 255, 204, 0.1)' : 'rgba(255, 0, 0, 0.1)'};
+  color: ${props => props.success ? 'var(--accent)' : '#ff6b6b'};
 `;
 
 const PostsList = styled.div`
   margin-top: 2rem;
-  border-top: 2px solid rgba(238, 187, 195, 0.2);
+  border-top: 1px solid var(--text-muted);
   padding-top: 1.5rem;
 
   h2 {
-    color: #eebbc3;
+    color: var(--accent);
     margin-bottom: 1rem;
     font-size: 1.3rem;
   }
 
   p {
-    color: #b8c1ec;
+    color: var(--text-muted);
     font-style: italic;
   }
 `;
@@ -83,9 +103,13 @@ const PostItem = styled.div`
   align-items: center;
   padding: 1rem;
   margin-bottom: 0.5rem;
-  background: rgba(35, 41, 70, 0.5);
+  background: var(--bg);
   border-radius: 4px;
-  border: 1px solid rgba(238, 187, 195, 0.1);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: var(--surface-hover);
+  }
 `;
 
 const PostInfo = styled.div`
@@ -94,39 +118,36 @@ const PostInfo = styled.div`
 
 const PostTitle = styled.h3`
   margin: 0;
-  color: #eebbc3;
+  color: var(--text);
   font-size: 1.1rem;
   font-weight: 600;
 `;
 
 const PostSlug = styled.div`
-  color: #b8c1ec;
+  color: var(--text-muted);
   font-size: 0.9rem;
   margin-top: 0.25rem;
 `;
 
 const DeleteButton = styled.button`
   background: #ff6b6b;
-  color: #232946;
+  color: var(--bg);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
   margin-left: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   transition: all 0.2s ease;
 
   &:hover {
     background: #ff8787;
-    transform: translateY(-1px);
   }
 
   &:disabled {
-    background: #4a4e69;
-    color: #b8c1ec;
+    background: var(--text-muted);
     cursor: not-allowed;
-    transform: none;
   }
 `;
 
