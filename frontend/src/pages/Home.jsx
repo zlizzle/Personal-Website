@@ -4,7 +4,7 @@ function Home() {
   const [showProjects, setShowProjects] = useState(false);
 
   return (
-    <>
+    <div className="home">
       {/* Identity-driven intro */}
       <div className="hero">
         <h1>Ernesto Diaz</h1>
@@ -60,7 +60,7 @@ function Home() {
           View Source on GitHub
         </a>
       </div>
-    </>
+    </div>
   );
 }
 

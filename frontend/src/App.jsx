@@ -10,17 +10,7 @@ import "./App.css";
 function App() {
   const [showConsole, setShowConsole] = useState(true);
   const [consoleText, setConsoleText] = useState('');
-  const [showBanner, setShowBanner] = useState(true);
-  const [showProjects, setShowProjects] = useState(false);
-  const [pokeHandle, setPokeHandle] = useState("");
-  const [pokeMsg, setPokeMsg] = useState("");
-  const [pokeSent, setPokeSent] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
-  const [pokeAttempts, setPokeAttempts] = useState(0);
-  const [pokeError, setPokeError] = useState(false);
-  const [pokeBackendError, setPokeBackendError] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [pokeRetryAfter, setPokeRetryAfter] = useState(60);
 
   useEffect(() => {
     const text = 'const identity = "Ernesto Diaz";';
@@ -63,7 +53,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:id" element={<BlogPost />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
