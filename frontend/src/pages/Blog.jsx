@@ -158,7 +158,7 @@ const Blog = () => {
     return (
       <BlogContainer>
         <LoadingContainer>
-          <LoadingText>Loading posts...</LoadingText>
+          <LoadingText>Loading posts... <br />(If this is your first visit, it may take a few moments for the server to wake up.)</LoadingText>
         </LoadingContainer>
       </BlogContainer>
     );
