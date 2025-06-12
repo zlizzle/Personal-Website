@@ -11,6 +11,9 @@ function App() {
   const [showConsole, setShowConsole] = useState(true);
   const [consoleText, setConsoleText] = useState('');
   const [showAIChat, setShowAIChat] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    { role: 'ai', content: 'Hi! I\'m your AI assistant. How can I help you today?' }
+  ]);
 
   useEffect(() => {
     const text = 'const identity = "Ernesto Diaz";';
@@ -26,6 +29,46 @@ function App() {
     }, 100);
     return () => clearInterval(timer);
   }, []);
+
+  // Console easter egg
+  useEffect(() => {
+    const handleConsoleInput = (e) => {
+      if (e.key === 'Enter' && e.target.value.toLowerCase() === 'help') {
+        console.log('%c👋 Hey there!', 'color: #00ffcc; font-size: 20px; font-weight: bold;');
+        console.log('%cThanks for checking out the console!', 'color: #f0f0f0; font-size: 16px;');
+        console.log('%cTry typing "about" for more info.', 'color: #00ffcc; font-size: 14px;');
+        e.target.value = '';
+      } else if (e.key === 'Enter' && e.target.value.toLowerCase() === 'about') {
+        console.log('%cAbout this site:', 'color: #00ffcc; font-size: 16px; font-weight: bold;');
+        console.log('%cBuilt with React + Vite', 'color: #f0f0f0;');
+        console.log('%cBackend: FastAPI + SQLite', 'color: #f0f0f0;');
+        console.log('%cDeployed on Vercel + Render', 'color: #f0f0f0;');
+        e.target.value = '';
+      }
+    };
+
+    window.addEventListener('keydown', handleConsoleInput);
+    return () => window.removeEventListener('keydown', handleConsoleInput);
+  }, []);
+
+  const handleAIChat = async (message) => {
+    // Add user message
+    setChatMessages(prev => [...prev, { role: 'user', content: message }]);
+
+    try {
+      // Simulate AI response (replace with actual API call)
+      const response = await new Promise(resolve => 
+        setTimeout(() => resolve('I\'m a simple AI chat widget. In a real implementation, I would connect to an AI service.'), 1000)
+      );
+      
+      setChatMessages(prev => [...prev, { role: 'ai', content: response }]);
+    } catch (error) {
+      setChatMessages(prev => [...prev, { 
+        role: 'ai', 
+        content: 'Sorry, I encountered an error. Please try again later.' 
+      }]);
+    }
+  };
 
   return (
     <Router>
@@ -66,6 +109,7 @@ function App() {
           </footer>
         </div>
 
+        {/* AI Chat Widget */}
         <button 
           className="ai-chat-toggle"
           onClick={() => setShowAIChat(!showAIChat)}
@@ -73,6 +117,47 @@ function App() {
         >
           {showAIChat ? 'Close Chat' : 'Open Chat'}
         </button>
+
+        {showAIChat && (
+          <div className="ai-chat-widget">
+            <div className="ai-chat-header">
+              <span>🤖 AI Assistant</span>
+              <button 
+                className="ai-chat-close"
+                onClick={() => setShowAIChat(false)}
+                aria-label="Close chat"
+              >
+                ×
+              </button>
+            </div>
+            <div className="ai-chat-messages">
+              {chatMessages.map((msg, i) => (
+                <div key={i} className={`ai-chat-message ${msg.role}`}>
+                  {msg.content}
+                </div>
+              ))}
+            </div>
+            <form 
+              className="ai-chat-input"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const input = e.target.elements.message;
+                if (input.value.trim()) {
+                  handleAIChat(input.value);
+                  input.value = '';
+                }
+              }}
+            >
+              <input
+                type="text"
+                name="message"
+                placeholder="Type your message..."
+                aria-label="Chat message"
+              />
+              <button type="submit" aria-label="Send message">Send</button>
+            </form>
+          </div>
+        )}
       </div>
     </Router>
   );

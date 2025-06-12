@@ -54,11 +54,9 @@ function Home() {
         </a>
       </div>
 
-      {/* DM line */}
-      <div className="dm-line">
-        <a href="https://github.com/zlizzle/Personal-Website" target="_blank" rel="noopener noreferrer" aria-label="View Source on GitHub">
-          View Source on GitHub
-        </a>
+      {/* Subtle quote */}
+      <div className="subtle-quote">
+        Breaking things less often each week.
       </div>
     </div>
   );
