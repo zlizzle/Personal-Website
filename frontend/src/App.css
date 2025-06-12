@@ -492,15 +492,42 @@ button:hover, .cta:hover {
 }
 
 .ai-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 1rem;
   background: linear-gradient(90deg, var(--song-dark), var(--song-purple));
   color: var(--song-light);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   font-weight: 500;
   position: relative;
   overflow: hidden;
+}
+
+.ai-header-left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.ai-header-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  border: 1.5px solid rgba(157, 78, 221, 0.4);
+  box-shadow: 0 0 10px rgba(157, 78, 221, 0.15);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ai-header-title {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--song-light);
+  margin-right: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ai-chat-header::before {

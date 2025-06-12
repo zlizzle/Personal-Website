@@ -530,20 +530,13 @@ function App() {
       {showAIChat && (
         <div className={`ai-chat-widget ${glitchEffect ? 'song-glitch' : ''} ${isHacked ? 'hacked' : ''}`}>
           <div className="ai-chat-header">
-            <span>
+            <span className="ai-header-left">
               <img 
                 src="/song-avatar.png" 
                 alt="Song So Mi" 
-                style={{ 
-                  width: '24px', 
-                  height: '24px', 
-                  borderRadius: '50%', 
-                  marginRight: '0.5rem',
-                  verticalAlign: 'middle',
-                  border: '1px solid var(--song-border)'
-                }} 
+                className="ai-header-avatar"
               />
-              Song So Mi
+              <span className="ai-header-title">Song So Mi</span>
               <span className="connection-strength" style={{ opacity: connectionStrength / 100 }}>
                 {connectionStrength.toFixed(0)}%
               </span>
