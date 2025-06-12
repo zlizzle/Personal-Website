@@ -38,20 +38,23 @@ app = FastAPI(
 
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["*"] if os.getenv("ENVIRONMENT") == "development" else [
+    allowed_hosts=[
         "localhost",
         "127.0.0.1",
         "www.edsolutions.space",
         "edsolutions.space",
-    ]
+        "personal-website-ul2i.onrender.com",
+        "personal-website-9uuj-i1f2b7u1e-alejandros-projects-b5149709.vercel.app",
+    ] if os.getenv("ENVIRONMENT") == "production" else ["*"]
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"] if os.getenv("ENVIRONMENT") == "development" else [
+    allow_origins=[
         "https://www.edsolutions.space",
         "https://edsolutions.space",
-    ],
+        "https://personal-website-9uuj-i1f2b7u1e-alejandros-projects-b5149709.vercel.app",
+    ] if os.getenv("ENVIRONMENT") == "production" else ["*"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["*"],
