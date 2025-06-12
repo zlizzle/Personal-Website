@@ -72,10 +72,10 @@ limiter = Limiter(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# Health check endpoint (moved before static files)
-@app.get("/health")
+# Health check endpoint (GET and HEAD)
+@app.api_route("/health", methods=["GET", "HEAD"])
 async def health_check():
-    return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
+    return {"status": "healthy"}
 
 # Configure static files with caching
 static_path = os.path.join(os.path.dirname(__file__), "static")
