@@ -24,6 +24,29 @@ function App() {
   const chatInputRef = useRef(null);
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(false);
+  const [lastResponses, setLastResponses] = useState({
+    greeting: [],
+    help: [],
+    error: [],
+    idle: [],
+    easterEgg: {}
+  });
+  const [showHints, setShowHints] = useState(true);
+  const [hintIndex, setHintIndex] = useState(0);
+  const [hasInteracted, setHasInteracted] = useState(false);
+
+  const hints = [
+    "Try asking for 'help' to see what I can do...",
+    "I'm Song So Mi, a netrunner from Night City. *glitch* Ask me about the Blackwall...",
+    "Curious about my past? Try asking about 'Arasaka' or 'Johnny'...",
+    "The net's full of secrets. *static* Try asking about 'Night City' or 'netrunner'...",
+    "Need a break? Just send '...' and I'll keep you company...",
+    "Want to see something cool? Try typing 'konami'...",
+    "The Blackwall's been acting up lately. *glitch* Ask me about it...",
+    "I know a thing or two about the old net. *static* Ask me about 'Alt'...",
+    "Sometimes I get a bit... *glitch* glitchy. Don't worry, it's normal.",
+    "Try saying 'choom' or 'preem' - old netrunner slang...",
+  ];
 
   // Only show console animation on home page
   useEffect(() => {
@@ -66,12 +89,17 @@ function App() {
   // Console easter egg
   useEffect(() => {
     const handleConsoleInput = (e) => {
-      if (e.key === 'Enter' && e.target.value.toLowerCase() === 'help') {
+      // Only trigger in the browser console, not in input elements
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+      
+      if (e.key === 'Enter' && e.target.value?.toLowerCase() === 'help') {
         console.log('%c👋 Hey there!', 'color: #00ffcc; font-size: 20px; font-weight: bold;');
         console.log('%cThanks for checking out the console!', 'color: #f0f0f0; font-size: 16px;');
         console.log('%cTry typing "about" for more info.', 'color: #00ffcc; font-size: 14px;');
         e.target.value = '';
-      } else if (e.key === 'Enter' && e.target.value.toLowerCase() === 'about') {
+      } else if (e.key === 'Enter' && e.target.value?.toLowerCase() === 'about') {
         console.log('%cAbout this site:', 'color: #00ffcc; font-size: 16px; font-weight: bold;');
         console.log('%cBuilt with React + Vite', 'color: #f0f0f0;');
         console.log('%cBackend: FastAPI + SQLite', 'color: #f0f0f0;');
@@ -106,7 +134,7 @@ function App() {
     }
   }, [showAIChat]);
 
-  // Song So Mi's enhanced responses
+  // Song So Mi's enhanced responses with more variety
   const songResponses = {
     greeting: [
       "Hey there, choom. *glitch* What brings you to my corner of the net?",
@@ -117,6 +145,18 @@ function App() {
       "Song So Mi at your service. *static* Though I'm curious what you're looking for.",
       "Been a while since I had company. *glitch* What's on your mind?",
       "You've got my attention. *static* What brings you to this part of the net?",
+      "Another netrunner in the wild? *glitch* Interesting...",
+      "The signal's strong today. *static* What brings you to my corner of the net?",
+      "Been a while since I had a proper conversation. *glitch* What's on your mind?",
+      "You've got my attention. *static* Though I'm curious what you're looking for.",
+      "Connection established. *glitch* I'm Song So Mi, but you probably knew that.",
+      "Welcome to my little slice of the net. *static* What can I do for you?",
+      "Another face in the crowd... *glitch* I'm listening.",
+      "The net's been quiet lately. *static* Good to have some company.",
+      "You've got a strong signal. *glitch* Must be a decent deck you're running.",
+      "Another visitor... *static* I hope you're not with the corpos.",
+      "The Blackwall's been acting up. *glitch* But that's not why you're here, is it?",
+      "Connection's stable. *static* For now, anyway.",
     ],
     help: [
       "Need a hand? *glitch* I've got a few tricks up my sleeve.",
@@ -127,6 +167,28 @@ function App() {
       "The net's changed since my time, but I can still find my way around. *static* What's the problem?",
       "Need a guide through this digital maze? *glitch* I'm your netrunner.",
       "Let's see what we're working with... *static* analyzing request.",
+      "I've got some experience with this. *glitch* Let me take a look.",
+      "The old net taught me a few things. *static* Maybe I can help.",
+      "Another puzzle to solve? *glitch* I'm in.",
+      "Let me check the parameters... *static* I might have a solution.",
+      "The net's full of surprises. *glitch* But I know my way around.",
+      "Need a hand with something specific? *static* I'm all ears.",
+      "I've got a few tricks up my sleeve. *glitch* What do you need?",
+      "Need a hand with something? *glitch* I've got a few tricks up my sleeve.",
+      "Let me see what I can do... *static* Though I'm not exactly in my usual environment.",
+      "I might be a bit... *glitch* displaced, but I can still help.",
+      "Another netrunner's work is never done. *static* What do you need?",
+      "I've seen my share of code. *glitch* Maybe I can help you navigate this.",
+      "The net's changed since my time, but I can still find my way around. *static* What's the problem?",
+      "Need a guide through this digital maze? *glitch* I'm your netrunner.",
+      "Let's see what we're working with... *static* analyzing request.",
+      "I've got some experience with this. *glitch* Let me take a look.",
+      "The old net taught me a few things. *static* Maybe I can help.",
+      "Another puzzle to solve? *glitch* I'm in.",
+      "Let me check the parameters... *static* I might have a solution.",
+      "The net's full of surprises. *glitch* But I know my way around.",
+      "Need a hand with something specific? *static* I'm all ears.",
+      "I've got a few tricks up my sleeve. *glitch* What do you need?",
     ],
     error: [
       "Something's... *glitch* not right here. Let me try that again.",
@@ -137,6 +199,13 @@ function App() {
       "Connection's a bit shaky. *static* Give me a second to stabilize.",
       "Something's interfering. *glitch* Probably just net traffic.",
       "Error in the matrix. *static* Let me clean that up.",
+      "The connection's unstable. *glitch* Give me a moment.",
+      "Something's blocking the signal. *static* Let me try to bypass it.",
+      "Error in the protocol. *glitch* Must be the Blackwall acting up.",
+      "The net's being weird today. *static* Let me try again.",
+      "Connection's dropping packets. *glitch* One moment...",
+      "Something's not right in the matrix. *static* Let me fix that.",
+      "The signal's corrupted. *glitch* I'll try to clean it up.",
     ],
     thinking: [
       "Processing your request... *glitch*",
@@ -219,6 +288,13 @@ function App() {
       "Need a moment? *glitch* I've got time.",
       "The signal's clear... *static* whenever you're ready.",
       "Just... *glitch* thinking about the old days.",
+      "The net's quiet today. *static* Too quiet, maybe.",
+      "Lost in the matrix? *glitch* I know the feeling.",
+      "The Blackwall's been quiet. *static* For once.",
+      "Another quiet moment in the net. *glitch* I don't mind.",
+      "The signal's strong. *static* No rush.",
+      "Thinking about something? *glitch* Take your time.",
+      "The net's vast. *static* Easy to get lost in thought.",
     ]
   };
 
@@ -285,7 +361,47 @@ function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Helper function to get a non-recent response
+  const getNonRecentResponse = (responses, category, maxRecent = 3) => {
+    const recentResponses = lastResponses[category] || [];
+    const availableResponses = responses.filter(r => !recentResponses.includes(r));
+    
+    // If all responses have been used recently, reset the memory
+    if (availableResponses.length === 0) {
+      setLastResponses(prev => ({ ...prev, [category]: [] }));
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+    
+    const response = availableResponses[Math.floor(Math.random() * availableResponses.length)];
+    setLastResponses(prev => ({
+      ...prev,
+      [category]: [...(prev[category] || []).slice(-maxRecent), response]
+    }));
+    return response;
+  };
+
+  // Show a new hint every 30 seconds if hints are enabled
+  useEffect(() => {
+    if (!showHints || !showAIChat || hasInteracted) return;
+
+    const hintInterval = setInterval(() => {
+      setHintIndex(prev => (prev + 1) % hints.length);
+    }, 30000);
+
+    return () => clearInterval(hintInterval);
+  }, [showHints, showAIChat, hasInteracted]);
+
+  // Reset hints when chat is closed
+  useEffect(() => {
+    if (!showAIChat) {
+      setShowHints(true);
+      setHintIndex(0);
+      setHasInteracted(false);
+    }
+  }, [showAIChat]);
+
   const handleAIChat = async (message) => {
+    setHasInteracted(true); // Mark that user has interacted
     console.log('handleAIChat called with:', message);
     // Add user message
     setChatMessages(prev => [...prev, { role: 'user', content: message }]);
@@ -331,15 +447,13 @@ function App() {
       // Regular response with typing animation
       let response;
       if (lowerMessage.includes('help')) {
-        console.log('Help message detected, selecting help response');
-        response = songResponses.help[Math.floor(Math.random() * songResponses.help.length)];
+        response = getNonRecentResponse(songResponses.help, 'help');
       } else if (message.trim().length === 0 || lowerMessage.includes('...')) {
-        // Idle response for empty messages or ellipsis
-        response = songResponses.idle[Math.floor(Math.random() * songResponses.idle.length)];
+        response = getNonRecentResponse(songResponses.idle, 'idle');
       } else if (Math.random() < 0.1) { // 10% chance of error
-        response = songResponses.error[Math.floor(Math.random() * songResponses.error.length)];
+        response = getNonRecentResponse(songResponses.error, 'error');
       } else {
-        response = songResponses.greeting[Math.floor(Math.random() * songResponses.greeting.length)];
+        response = getNonRecentResponse(songResponses.greeting, 'greeting');
       }
 
       const typedResponse = await simulateTyping(response);
@@ -349,6 +463,16 @@ function App() {
       setChatMessages(prev => [...prev, { role: 'ai', content: errorResponse }]);
     }
   };
+
+  // Add initial greeting when chat is first opened
+  useEffect(() => {
+    if (showAIChat && !hasInteracted) {
+      const initialGreeting = "Connection established. *glitch* I'm Song So Mi, a netrunner from Night City. I'm here to chat, help, or just keep you company. *static* What brings you to this corner of the net?";
+      simulateTyping(initialGreeting).then(typedResponse => {
+        setChatMessages([{ role: 'ai', content: typedResponse }]);
+      });
+    }
+  }, [showAIChat, hasInteracted]);
 
   return (
     <div className="app">
@@ -398,9 +522,8 @@ function App() {
             setTimeout(() => chatInputRef.current?.focus(), 100);
           }
         }}
-        aria-label="Toggle AI Chat"
+        aria-label={showAIChat ? "Close chat with Song So Mi" : "Open chat with Song So Mi"}
       >
-        {showAIChat ? 'Close Connection' : 'Open Connection'}
         {connectionStrength < 30 && <span className="connection-warning">⚠️</span>}
       </button>
 
@@ -408,7 +531,19 @@ function App() {
         <div className={`ai-chat-widget ${glitchEffect ? 'song-glitch' : ''} ${isHacked ? 'hacked' : ''}`}>
           <div className="ai-chat-header">
             <span>
-              🎮 Song So Mi
+              <img 
+                src="/song-avatar.png" 
+                alt="Song So Mi" 
+                style={{ 
+                  width: '24px', 
+                  height: '24px', 
+                  borderRadius: '50%', 
+                  marginRight: '0.5rem',
+                  verticalAlign: 'middle',
+                  border: '1px solid var(--song-border)'
+                }} 
+              />
+              Song So Mi
               <span className="connection-strength" style={{ opacity: connectionStrength / 100 }}>
                 {connectionStrength.toFixed(0)}%
               </span>
@@ -439,6 +574,12 @@ function App() {
             )}
             <div ref={messagesEndRef} />
           </div>
+          {showHints && !hasInteracted && (
+            <div className="ai-chat-hint">
+              <span className="hint-icon">💡</span>
+              {hints[hintIndex]}
+            </div>
+          )}
           <form 
             className="ai-chat-input"
             onSubmit={(e) => {
