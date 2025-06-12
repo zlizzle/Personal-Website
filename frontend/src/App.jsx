@@ -11,11 +11,7 @@ function App() {
   const [showConsole, setShowConsole] = useState(false);
   const [consoleText, setConsoleText] = useState('');
   const [showAIChat, setShowAIChat] = useState(false);
-  const [chatMessages, setChatMessages] = useState([
-    { role: 'ai', content: "Connection established... *glitch* Hello? Can you hear me? I'm Song So Mi. Looks like we're linked up through this interface." },
-    { role: 'user', content: 'Hey, who are you?' },
-    { role: 'ai', content: "Just a netrunner trying to make sense of this new connection. *static* I'm... not exactly in my usual environment. But I can help you navigate this digital space." }
-  ]);
+  const [chatMessages, setChatMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [glitchEffect, setGlitchEffect] = useState(false);
   const [connectionStrength, setConnectionStrength] = useState(100);
@@ -474,13 +470,13 @@ function App() {
 
   // Add initial greeting when chat is first opened
   useEffect(() => {
-    if (showAIChat && !hasInteracted) {
+    if (showAIChat && !hasInteracted && chatMessages.length === 0) {
       const initialGreeting = "Connection established. *glitch* I'm Song So Mi, a netrunner from Night City. I'm here to chat, help, or just keep you company. *static* What brings you to this corner of the net?";
       simulateTyping(initialGreeting).then(typedResponse => {
         setChatMessages([{ role: 'ai', content: typedResponse }]);
       });
     }
-  }, [showAIChat, hasInteracted]);
+  }, [showAIChat, hasInteracted, chatMessages.length]);
 
   return (
     <div className="app">
