@@ -80,13 +80,16 @@ templates = Jinja2Templates(
 async def health_check():
     return {"status": "healthy"}
 
-@app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/", methods=["GET"], include_in_schema=False)
 @limiter.exempt
-async def index(request: Request):
-    user_agent = request.headers.get("user-agent", "").lower()
-    if request.method == "HEAD" or any(bot in user_agent for bot in ("render", "uptimerobot", "health")):
-        return JSONResponse({"status": "ok"})
+async def serve_index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.api_route("/", methods=["HEAD"], include_in_schema=False)
+@limiter.exempt
+async def serve_head():
+    return JSONResponse({"status": "ok"})
+
 
 
 app.include_router(
