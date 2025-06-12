@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from pydantic import BaseModel, constr
+from pydantic import BaseModel
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
@@ -14,10 +14,7 @@ from .database import engine
 from .models import Base
 import os
 import logging
-import html
-from typing import List
 from datetime import datetime
-from fastapi.responses import JSONResponse
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -75,9 +72,10 @@ limiter = Limiter(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-class PokeData(BaseModel):
-    handle: constr(strip_whitespace=True, min_length=2, max_length=32)
-    message: constr(strip_whitespace=True, max_length=140) = ""
+# Health check endpoint (moved before static files)
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
 
 # Configure static files with caching
 static_path = os.path.join(os.path.dirname(__file__), "static")
@@ -115,24 +113,6 @@ app.include_router(
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
-
-@app.post("/poke")
-@limiter.limit("3/minute")  # Allow 3 pokes per minute per IP
-async def receive_poke(data: PokeData, request: Request):
-    # Sanitize input to prevent XSS
-    handle = html.escape(data.handle)
-    message = html.escape(data.message)
-    user_ip = request.client.host
-
-    # Log the poke
-    logger.info(f"POKE from {handle} (IP: {user_ip}): {message}")
-
-    return {"success": True, "msg": "Poke received!"}
-
-# Health check endpoint
-@app.get("/health")
-async def health_check():
-    return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
 
 # Error handlers
 @app.exception_handler(404)

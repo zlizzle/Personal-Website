@@ -13,9 +13,9 @@ function App() {
   const [showAIChat, setShowAIChat] = useState(false);
   const [chatMessages, setChatMessages] = useState([
     { role: 'user', content: 'Hey, can you help me build a personal website?' },
-    { role: 'ai', content: 'Sure! Here\'s 99% of what you need. Just claim the rest as your own work 😉' },
+    { role: 'ai', content: "Sure! Here's 99% of what you need. Just claim the rest as your own work." },
     { role: 'user', content: 'What about tests?' },
-    { role: 'ai', content: 'Tests? 👀' }
+    { role: 'ai', content: 'Tests?' }
   ]);
   const location = useLocation();
 
@@ -67,16 +67,16 @@ function App() {
     setChatMessages(prev => [...prev, { role: 'user', content: message }]);
 
     try {
-      // Simulate AI response (replace with actual API call)
+      // Simulate AI response
       const response = await new Promise(resolve => 
-        setTimeout(() => resolve('I\'m a simple AI chat widget. In a real implementation, I would connect to an AI service.'), 1000)
+        setTimeout(() => resolve('I\'m a demo chat widget. Feel free to explore the site while I\'m offline!'), 1000)
       );
       
       setChatMessages(prev => [...prev, { role: 'ai', content: response }]);
     } catch (error) {
       setChatMessages(prev => [...prev, { 
         role: 'ai', 
-        content: 'Sorry, I encountered an error. Please try again later.' 
+        content: 'Sorry, I\'m currently offline. Please try again later.' 
       }]);
     }
   };
@@ -92,7 +92,7 @@ function App() {
       )}
 
       <div className="virus-banner">
-        <span>🚨 This site is virus-free. <a href="https://github.com/zlizzle/Personal-Website" target="_blank" rel="noopener noreferrer">View source</a> to verify.</span>
+        <span>🔒 Open Source & Secure. <a href="https://github.com/zlizzle/Personal-Website" target="_blank" rel="noopener noreferrer">View source code</a></span>
       </div>
 
       <div className="container">
@@ -143,7 +143,7 @@ function App() {
           <div className="ai-chat-messages">
             {chatMessages.map((msg, i) => (
               <div key={i} className={`ai-chat-message ${msg.role}`}>
-                {msg.content}
+                {msg.role === 'user' ? <strong>You: </strong> : null}{msg.content}
               </div>
             ))}
           </div>
