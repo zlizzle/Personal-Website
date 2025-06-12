@@ -16,10 +16,8 @@ import os
 import logging
 from datetime import datetime
 
-# Create database tables
 Base.metadata.create_all(bind=engine)
 
-# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -30,16 +28,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Initialize FastAPI with optimized settings
 app = FastAPI(
     title="Personal Website API",
     description="Backend API for personal website",
     version="1.0.0",
-    docs_url=None,  # Disable Swagger UI in production
-    redoc_url=None,  # Disable ReDoc in production
+    docs_url=None,
+    redoc_url=None,
 )
 
-# Add middleware in correct order
 app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=["*"] if os.getenv("ENVIRONMENT") == "development" else [
@@ -59,43 +55,39 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["*"],
-    max_age=3600,  # Cache preflight requests for 1 hour
+    max_age=3600
 )
 
-app.add_middleware(GZipMiddleware, minimum_size=1000)  # Compress responses > 1KB
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# Configure rate limiter
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=["200/hour", "50/minute"]  # Global rate limits
+    default_limits=["200/hour", "50/minute"]
 )
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-# Health check endpoint (GET and HEAD)
-@app.api_route("/health", methods=["GET", "HEAD"])
-async def health_check():
-    return {"status": "healthy"}
-
-# Configure static files with caching
 static_path = os.path.join(os.path.dirname(__file__), "static")
-app.mount(
-    "/static",
-    StaticFiles(
-        directory=static_path,
-        html=True,
-        check_dir=True
-    ),
-    name="static"
-)
+app.mount("/static", StaticFiles(directory=static_path, html=True, check_dir=True), name="static")
 
-# Configure templates
 templates = Jinja2Templates(
     directory=os.path.join(os.path.dirname(__file__), "templates"),
     auto_reload=os.getenv("ENVIRONMENT") == "development"
 )
 
-# Include routers with rate limits
+@app.api_route("/health", methods=["GET", "HEAD"])
+@limiter.exempt
+async def health_check():
+    return {"status": "healthy"}
+
+@app.get("/", include_in_schema=False)
+@limiter.exempt
+async def index(request: Request):
+    user_agent = request.headers.get("user-agent", "").lower()
+    if "render" in user_agent or "uptimerobot" in user_agent or "health" in user_agent:
+        return JSONResponse({"status": "ok"})
+    return templates.TemplateResponse("index.html", {"request": request})
+
 app.include_router(
     blog.router,
     prefix="/api",
@@ -110,22 +102,11 @@ app.include_router(
     responses={404: {"description": "Not found"}},
 )
 
-@app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
-
-# Error handlers
 @app.exception_handler(404)
 async def not_found_handler(request: Request, exc):
-    return JSONResponse(
-        status_code=404,
-        content={"detail": "Not found"}
-    )
+    return JSONResponse(status_code=404, content={"detail": "Not found"})
 
 @app.exception_handler(500)
 async def server_error_handler(request: Request, exc):
     logger.error(f"Server error: {exc}", exc_info=True)
-    return JSONResponse(
-        status_code=500,
-        content={"detail": "Internal server error"}
-    )
+    return JSONResponse(status_code=500, content={"detail": "Internal server error"})
