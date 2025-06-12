@@ -82,20 +82,10 @@ async def health_check():
 
 @app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
 @limiter.exempt
-async def root(request: Request):
+async def serve_root(request: Request):
     if request.method == "HEAD":
-        return JSONResponse(content={"status": "ok"})
-
-    user_agent = request.headers.get("user-agent", "").lower()
-    known_checkers = ["render", "uptimerobot", "health", "statuscake", "datadog"]
-
-    if any(keyword in user_agent for keyword in known_checkers):
-        return JSONResponse(content={"status": "ok"})
-
+        return JSONResponse({"status": "ok"})
     return templates.TemplateResponse("index.html", {"request": request})
-
-
-
 
 
 app.include_router(
