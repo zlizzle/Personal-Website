@@ -83,9 +83,15 @@ async def health_check():
 @app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
 @limiter.exempt
 async def serve_root(request: Request):
+    logger.info(f"[serve_root] Method={request.method}, User-Agent={request.headers.get('user-agent', '')}")
     if request.method == "HEAD":
         return JSONResponse({"status": "ok"})
-    return templates.TemplateResponse("index.html", {"request": request})
+    try:
+        return templates.TemplateResponse("index.html", {"request": request})
+    except Exception as e:
+        logger.error(f"[serve_root] Failed to render index.html: {e}")
+        return JSONResponse(status_code=500, content={"detail": "Failed to render index.html"})
+
 
 
 app.include_router(
