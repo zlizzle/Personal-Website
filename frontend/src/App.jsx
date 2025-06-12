@@ -48,38 +48,46 @@ function App() {
     "Try saying 'choom' or 'preem' - old netrunner slang...",
   ];
 
-  // Only show console animation on home page
+  // Only show console animation on home page, but only once per session
   useEffect(() => {
     if (location.pathname === '/') {
-      setShowConsole(true);
-      const lines = [
-        'identity = "Ernesto Diaz"',
-        'print(f"Hello, my name is {identity}")'
-      ];
-      let lineIdx = 0;
-      let charIdx = 0;
-      let currentText = '';
-      const typeNextChar = () => {
-        if (lineIdx < lines.length) {
-          if (charIdx < lines[lineIdx].length) {
-            setConsoleText(prev => prev.split('\n').slice(0, lineIdx).join('\n') + (lineIdx > 0 ? '\n' : '') + lines[lineIdx].slice(0, charIdx + 1));
-            charIdx++;
-            setTimeout(typeNextChar, 60);
-          } else {
-            // Move to next line
-            charIdx = 0;
-            lineIdx++;
-            if (lineIdx < lines.length) {
-              setConsoleText(prev => prev + '\n');
-              setTimeout(typeNextChar, 400);
+      // Only play if not already played this session
+      if (!sessionStorage.getItem('consoleIntroPlayed')) {
+        setShowConsole(true);
+        const lines = [
+          'identity = "Ernesto Diaz"',
+          'print(f"Hello, my name is {identity}")'
+        ];
+        let lineIdx = 0;
+        let charIdx = 0;
+        let currentText = '';
+        const typeNextChar = () => {
+          if (lineIdx < lines.length) {
+            if (charIdx < lines[lineIdx].length) {
+              setConsoleText(prev => prev.split('\n').slice(0, lineIdx).join('\n') + (lineIdx > 0 ? '\n' : '') + lines[lineIdx].slice(0, charIdx + 1));
+              charIdx++;
+              setTimeout(typeNextChar, 60);
             } else {
-              setTimeout(() => setShowConsole(false), 1200);
+              // Move to next line
+              charIdx = 0;
+              lineIdx++;
+              if (lineIdx < lines.length) {
+                setConsoleText(prev => prev + '\n');
+                setTimeout(typeNextChar, 400);
+              } else {
+                setTimeout(() => setShowConsole(false), 1200);
+                // Mark as played
+                sessionStorage.setItem('consoleIntroPlayed', 'true');
+              }
             }
           }
-        }
-      };
-      typeNextChar();
-      return () => setShowConsole(false);
+        };
+        typeNextChar();
+        return () => setShowConsole(false);
+      } else {
+        setShowConsole(false);
+        setConsoleText('');
+      }
     } else {
       setShowConsole(false);
       setConsoleText('');
