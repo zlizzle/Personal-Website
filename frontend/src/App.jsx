@@ -23,18 +23,34 @@ function App() {
   useEffect(() => {
     if (location.pathname === '/') {
       setShowConsole(true);
-      const text = 'const identity = "Ernesto Diaz";';
-      let i = 0;
-      const timer = setInterval(() => {
-        if (i < text.length) {
-          setConsoleText(text.slice(0, i + 1));
-          i++;
-        } else {
-          clearInterval(timer);
-          setTimeout(() => setShowConsole(false), 1000);
+      const lines = [
+        'identity = "Ernesto Diaz"',
+        'print(f"Hello, my name is {identity}")'
+      ];
+      let lineIdx = 0;
+      let charIdx = 0;
+      let currentText = '';
+      const typeNextChar = () => {
+        if (lineIdx < lines.length) {
+          if (charIdx < lines[lineIdx].length) {
+            setConsoleText(prev => prev.split('\n').slice(0, lineIdx).join('\n') + (lineIdx > 0 ? '\n' : '') + lines[lineIdx].slice(0, charIdx + 1));
+            charIdx++;
+            setTimeout(typeNextChar, 60);
+          } else {
+            // Move to next line
+            charIdx = 0;
+            lineIdx++;
+            if (lineIdx < lines.length) {
+              setConsoleText(prev => prev + '\n');
+              setTimeout(typeNextChar, 400);
+            } else {
+              setTimeout(() => setShowConsole(false), 1200);
+            }
+          }
         }
-      }, 100);
-      return () => clearInterval(timer);
+      };
+      typeNextChar();
+      return () => setShowConsole(false);
     } else {
       setShowConsole(false);
       setConsoleText('');
