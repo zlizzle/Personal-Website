@@ -23,10 +23,15 @@ function Home() {
         
         {showProjects && (
           <div className="projects-list">
-            <div className="project-card">
+            <a 
+              href="https://github.com/zlizzle/Portfolio-Tracker" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="project-card"
+            >
               <h3>Portfolio Tracker</h3>
               <p>Python/FastAPI/Rust. Tracks your assets. Perhaps, in the future a DEX.</p>
-            </div>
+            </a>
             <div className="project-card">
               <h3>This Website</h3>
               <p>React/FastAPI, open source. Built with Vite and redbull.</p>
