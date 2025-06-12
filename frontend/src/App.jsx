@@ -23,6 +23,7 @@ function App() {
   const messagesEndRef = useRef(null);
   const chatInputRef = useRef(null);
   const location = useLocation();
+  const [isMobile, setIsMobile] = useState(false);
 
   // Only show console animation on home page
   useEffect(() => {
@@ -270,15 +271,28 @@ function App() {
     return message;
   };
 
-  // Check for mobile device
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  // Improved mobile detection using media query
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+    };
+    
+    // Initial check
+    checkMobile();
+    
+    // Add listener for window resize
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleAIChat = async (message) => {
+    console.log('handleAIChat called with:', message);
     // Add user message
     setChatMessages(prev => [...prev, { role: 'user', content: message }]);
 
     // Check for secret commands
     const lowerMessage = message.toLowerCase();
+    console.log('Checking message:', lowerMessage);
     for (const [command, response] of Object.entries(secretCommands)) {
       if (lowerMessage.includes(command)) {
         const typedResponse = await simulateTyping(response());
@@ -316,9 +330,10 @@ function App() {
     try {
       // Regular response with typing animation
       let response;
-      if (message.toLowerCase().includes('help')) {
+      if (lowerMessage.includes('help')) {
+        console.log('Help message detected, selecting help response');
         response = songResponses.help[Math.floor(Math.random() * songResponses.help.length)];
-      } else if (message.trim().length === 0 || message.toLowerCase().includes('...')) {
+      } else if (message.trim().length === 0 || lowerMessage.includes('...')) {
         // Idle response for empty messages or ellipsis
         response = songResponses.idle[Math.floor(Math.random() * songResponses.idle.length)];
       } else if (Math.random() < 0.1) { // 10% chance of error
@@ -429,7 +444,9 @@ function App() {
             onSubmit={(e) => {
               e.preventDefault();
               const input = e.target.elements.message;
+              console.log('Form submitted with value:', input.value);
               if (input.value.trim()) {
+                console.log('Calling handleAIChat with:', input.value);
                 handleAIChat(input.value);
                 input.value = '';
                 // Keep focus on input after sending
