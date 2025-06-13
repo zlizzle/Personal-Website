@@ -92,28 +92,34 @@ function App() {
 
   // Console easter egg
   useEffect(() => {
-    const handleConsoleInput = (e) => {
-      // Only trigger in the browser console, not in input elements
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-        return;
+    const originalConsoleLog = console.log;
+    const originalConsoleError = console.error;
+
+    // Override console.log to catch our special commands
+    console.log = function(...args) {
+      const input = args[0];
+      if (typeof input === 'string') {
+        if (input.toLowerCase() === 'help') {
+          originalConsoleLog('%c👋 Hey there!', 'color: #00ffcc; font-size: 20px; font-weight: bold;');
+          originalConsoleLog('%cThanks for checking out the console!', 'color: #f0f0f0; font-size: 16px;');
+          originalConsoleLog('%cTry typing "about" for more info.', 'color: #00ffcc; font-size: 14px;');
+          return;
+        } else if (input.toLowerCase() === 'about') {
+          originalConsoleLog('%cAbout this site:', 'color: #00ffcc; font-size: 16px; font-weight: bold;');
+          originalConsoleLog('%cBuilt with React + Vite', 'color: #f0f0f0;');
+          originalConsoleLog('%cBackend: FastAPI + SQLite', 'color: #f0f0f0;');
+          originalConsoleLog('%cDeployed on Vercel + Render', 'color: #f0f0f0;');
+          return;
+        }
       }
-      
-      if (e.key === 'Enter' && e.target.value?.toLowerCase() === 'help') {
-        console.log('%c👋 Hey there!', 'color: #00ffcc; font-size: 20px; font-weight: bold;');
-        console.log('%cThanks for checking out the console!', 'color: #f0f0f0; font-size: 16px;');
-        console.log('%cTry typing "about" for more info.', 'color: #00ffcc; font-size: 14px;');
-        e.target.value = '';
-      } else if (e.key === 'Enter' && e.target.value?.toLowerCase() === 'about') {
-        console.log('%cAbout this site:', 'color: #00ffcc; font-size: 16px; font-weight: bold;');
-        console.log('%cBuilt with React + Vite', 'color: #f0f0f0;');
-        console.log('%cBackend: FastAPI + SQLite', 'color: #f0f0f0;');
-        console.log('%cDeployed on Vercel + Render', 'color: #f0f0f0;');
-        e.target.value = '';
-      }
+      originalConsoleLog.apply(console, args);
     };
 
-    window.addEventListener('keydown', handleConsoleInput);
-    return () => window.removeEventListener('keydown', handleConsoleInput);
+    // Restore original console methods on cleanup
+    return () => {
+      console.log = originalConsoleLog;
+      console.error = originalConsoleError;
+    };
   }, []);
 
   // Auto-scroll to bottom of messages
