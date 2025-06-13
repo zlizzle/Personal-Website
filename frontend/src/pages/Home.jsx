@@ -34,7 +34,7 @@ function Home() {
             </a>
             <div className="project-card">
               <h3>This Website</h3>
-              <p>React/FastAPI, open source. Built with Vite and redbull.</p>
+              <p>React/FastAPI, open source.</p>
             </div>
           </div>
         )}
