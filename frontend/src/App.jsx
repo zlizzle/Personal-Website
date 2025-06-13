@@ -90,35 +90,22 @@ function App() {
     }
   }, [location.pathname]);
 
-  // Console easter egg
+  // Console easter egg as global functions
   useEffect(() => {
-    const originalConsoleLog = console.log;
-    const originalConsoleError = console.error;
-
-    // Override console.log to catch our special commands
-    console.log = function(...args) {
-      const input = args[0];
-      if (typeof input === 'string') {
-        if (input.toLowerCase() === 'help') {
-          originalConsoleLog('%c👋 Hey there!', 'color: #00ffcc; font-size: 20px; font-weight: bold;');
-          originalConsoleLog('%cThanks for checking out the console!', 'color: #f0f0f0; font-size: 16px;');
-          originalConsoleLog('%cTry typing "about" for more info.', 'color: #00ffcc; font-size: 14px;');
-          return;
-        } else if (input.toLowerCase() === 'about') {
-          originalConsoleLog('%cAbout this site:', 'color: #00ffcc; font-size: 16px; font-weight: bold;');
-          originalConsoleLog('%cBuilt with React + Vite', 'color: #f0f0f0;');
-          originalConsoleLog('%cBackend: FastAPI + SQLite', 'color: #f0f0f0;');
-          originalConsoleLog('%cDeployed on Vercel + Render', 'color: #f0f0f0;');
-          return;
-        }
-      }
-      originalConsoleLog.apply(console, args);
+    window.help = () => {
+      console.log('%c# 👋 Hey there!', 'color: #00ffcc; font-size: 20px; font-weight: bold;');
+      console.log('%c# Thanks for checking out the console!', 'color: #f0f0f0; font-size: 16px;');
+      console.log('%c# Try typing about() for more info.', 'color: #00ffcc; font-size: 14px;');
     };
-
-    // Restore original console methods on cleanup
+    window.about = () => {
+      console.log('%c# About this site:', 'color: #00ffcc; font-size: 16px; font-weight: bold;');
+      console.log('%c# Built with React + Vite', 'color: #f0f0f0;');
+      console.log('%c# Backend: FastAPI + SQLite', 'color: #f0f0f0;');
+      console.log('%c# Deployed on Vercel + Render', 'color: #f0f0f0;');
+    };
     return () => {
-      console.log = originalConsoleLog;
-      console.error = originalConsoleError;
+      delete window.help;
+      delete window.about;
     };
   }, []);
 
@@ -518,7 +505,7 @@ function App() {
         <footer>
           Built with redbull & Vite
           <br />
-          <small>// Type 'help' in console for a surprise</small>
+          <small># Type <b>help()</b> in console for a surprise</small>
         </footer>
       </div>
 
