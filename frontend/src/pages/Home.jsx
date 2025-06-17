@@ -7,7 +7,7 @@ function Home() {
     <div className="home">
       {/* Identity-driven intro */}
       <div className="hero">
-        <h1>Ernesto Diaz</h1>
+        <h1>Alejandro Diaz</h1>
         <p className="hero-subtitle">Built conviction in markets. Now building in code.</p>
       </div>
 

@@ -51,7 +51,7 @@ function App() {
       if (!sessionStorage.getItem('consoleIntroPlayed')) {
         setShowConsole(true);
         const lines = [
-          'identity = "Ernesto Diaz"',
+          'identity = "Alejandro Diaz"',
           'print(f"Hello, my name is {identity}")'
         ];
         let lineIdx = 0;
